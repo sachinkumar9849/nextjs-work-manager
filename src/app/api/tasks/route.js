@@ -16,7 +16,7 @@ export async function GET(request) {
       message: "Failed to fetch tasks!!",
       success: false,
     });
-  } 
+  }
 }
 
 // create task
