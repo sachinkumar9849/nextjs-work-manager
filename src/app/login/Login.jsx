@@ -3,14 +3,16 @@ import React, { useState } from "react";
 import signUpBanner from "../../assets/singup.svg";
 import Image from "next/image";
 import { toast } from "react-toastify";
-import { signUp } from "@/services/userService";
+import { login, signUp } from "@/services/userService";
+import { useRouter } from "next/navigation";
 const Login = () => {
+  const router = useRouter();
   const [loginData, setloginData] = useState({
     email: "",
     password: "",
   });
 
-  const loginFormSubmitted = (e) => {
+  const loginFormSubmitted = async (e) => {
     e.preventDefault();
     console.log(loginData);
     if (loginData.email.trim() === "" || loginData.password.trim() === "") {
@@ -18,6 +20,19 @@ const Login = () => {
         position: "top-center",
       });
       return;
+    }
+    // valid data
+    // login
+    try {
+      const result = await login(loginData);
+      console.log(result);
+      toast.success("Logged In");
+      router.push("/profile/user")
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "top-center",
+      });
     }
   };
 
